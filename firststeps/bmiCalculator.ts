@@ -18,7 +18,7 @@ const parseArguments = (args: string[]): Measurements => {
       weight: Number(args[3])
     };
   }
-}
+};
 
 const calculateBmi = (height: number, weight: number) : string => {
   const cubedheight = (( height / 100 )**2 );
