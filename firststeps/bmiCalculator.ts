@@ -16,7 +16,7 @@ const parseArguments = (args: string[]): Measurements => {
     return {
       height: Number(args[2]),
       weight: Number(args[3])
-    }
+    };
   }
 }
 
@@ -36,7 +36,7 @@ const calculateBmi = (height: number, weight: number) : string => {
     default:
       return "Something went wrong.";
   }
-}
+};
 
 // command line: npm run calculateBMI 180 74
 // arguments are parsed into height (cm) and weight (kg)

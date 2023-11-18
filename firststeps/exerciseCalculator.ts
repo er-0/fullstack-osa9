@@ -20,7 +20,7 @@ const parseArguments = (args: string[]) : Input => {
     throw new Error('Provided target was not a number!');
   }
   
-  const hoursList = args.slice(3).map(Number)
+  const hoursList = args.slice(3).map(Number);
   if (hoursList.some(isNaN)) {
     throw new Error('Provided values were not numbers!');
   }
@@ -28,27 +28,27 @@ const parseArguments = (args: string[]) : Input => {
   return {
       target: Number(args[2]),
       hoursList
-  }
-}
+  };
+};
 
 const ratingFunc = (ratio: number) => {
   if (ratio < 0.7) {
     return {
       rating: 1,
       ratingDescription: "Poor result, try harder!"
-    }
+    };
   }
   if (ratio < 1) {
     return {
       rating: 2,
       ratingDescription: "Not quite there yet!"
-    }
+    };
   }
   return {
     rating: 3,
     ratingDescription: "Well done, target reached!"
-  }
-}
+  };
+};
 
 const calculateExercise = (hoursList: number[], target: number) : Result => {
   const periodLength = hoursList.length;
@@ -56,7 +56,7 @@ const calculateExercise = (hoursList: number[], target: number) : Result => {
   const average = (hoursList.reduce((acc, currentValue) => acc + currentValue, 0) / periodLength);
   const ratio = average / target;
   const success = (ratio >= 1);
-  const { rating, ratingDescription } = ratingFunc(ratio)
+  const { rating, ratingDescription } = ratingFunc(ratio);
 
   return {
     periodLength,
@@ -66,8 +66,8 @@ const calculateExercise = (hoursList: number[], target: number) : Result => {
     ratingDescription,
     target,
     average
-  }
-}
+  };
+};
 
 // command line: npm run calculateExercises 2 1 0 2 4.5 0 3 1 0 4
 // first number is the target, the rest is hours of exercise per day
@@ -82,3 +82,5 @@ try {
   }
   console.log(errorMessage);
 }
+
+export default calculateExercise;
