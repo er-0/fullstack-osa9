@@ -1,3 +1,5 @@
+cloned from https://github.com/fullstack-hy2020/patientor/
+
 # Patientor frontend
 
 ### Getting started
