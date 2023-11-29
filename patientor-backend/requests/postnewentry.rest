@@ -4,7 +4,8 @@ Content-Type: application/json
 {
   "date": "2319-05-01",
   "specialist": "Dr House",
-  "type": "Health",
+  "type": "HealthCheck",
   "description": "Digital.",
-  "healthCheckRating": 0
+  "diagnosisCodes": [],
+  "healthCheckRating": "k"
 }
