@@ -5,6 +5,7 @@ import MaleIcon from '@mui/icons-material/Male';
 import TransgenderIcon from '@mui/icons-material/Transgender';
 
 import { HospitalEntry, OccupationalHealthcareEntry, HealthCheckEntry } from "./entryTypes";
+import AddEntryForm from "./AddEntryForm";
 
 interface Props {
   patients : Patient[]
@@ -55,6 +56,7 @@ export const PatientPage = ({ patients, diagnoses } : Props) => {
             <EntryDetails entry={entry} diagnoses={diagnoses} />
           </div>
         )}
+        <AddEntryForm onSubmit={() => console.log('clicked')} />
       </div>
     );
   } else {
