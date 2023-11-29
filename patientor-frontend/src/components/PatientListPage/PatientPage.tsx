@@ -1,8 +1,10 @@
-import { Gender, Patient, Diagnosis } from "../../types";
+import { Gender, Patient, Diagnosis, Entry } from "../../types";
 import { useParams } from "react-router-dom";
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
 import TransgenderIcon from '@mui/icons-material/Transgender';
+
+import { HospitalEntry, OccupationalHealthcareEntry, HealthCheckEntry } from "./entryTypes";
 
 interface Props {
   patients : Patient[]
@@ -19,6 +21,25 @@ const genderMarker = ( gender : Gender ) => {
   }
 };
 
+const assertNever = (value: never): never => {
+  throw new Error(
+    `Unhandled discriminated union member: ${JSON.stringify(value)}`
+  );
+};
+
+const EntryDetails: React.FC<{ entry: Entry, diagnoses : Diagnosis[] }> = ({ entry, diagnoses }) => {
+  switch (entry.type) {
+    case "Hospital":
+      return <HospitalEntry entry={entry} diagnoses={diagnoses}/>;
+    case "OccupationalHealthcare":
+      return <OccupationalHealthcareEntry entry={entry} diagnoses={diagnoses}/>;
+    case "HealthCheck":
+      return <HealthCheckEntry entry={entry} diagnoses={diagnoses}/>;
+    default:
+      return assertNever(entry);
+  }
+};
+
 export const PatientPage = ({ patients, diagnoses } : Props) => {
   const id = useParams().id;
   const patient = patients.find(n => n.id === id);
@@ -30,15 +51,8 @@ export const PatientPage = ({ patients, diagnoses } : Props) => {
         <p>occupation: {patient.occupation}</p>
         <h3>entries</h3>
         {patient.entries.map((entry) => 
-          <div key={entry.id}>
-            {entry.date} <i>{entry.description}</i>
-            <ul>
-              {entry.diagnosisCodes?.map((code) =>
-                <li>
-                  {code} {diagnoses.find(n => n.code === code)?.name}
-                </li>
-              )}
-            </ul>
+          <div key={entry.id} style={{ border: '1px solid #ccc', borderRadius: '8px', margin: '10px', padding: '8px' }}>
+            <EntryDetails entry={entry} diagnoses={diagnoses} />
           </div>
         )}
       </div>
