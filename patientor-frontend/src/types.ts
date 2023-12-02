@@ -67,5 +67,4 @@ export type Entry =
 type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
 // Define Entry without the 'id' property
 export type NewEntry = UnionOmit<Entry, 'id'>;
-export type NewEntryForm = Omit<HealthCheckEntry, 'id'>; /////// DELETE
 export type PatientFormValues = Omit<Patient, "id" | "entries">;

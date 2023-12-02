@@ -1,22 +1,22 @@
 import { useState, SyntheticEvent } from "react";
 
-import {  TextField, Grid, Button, /*InputLabel, MenuItem, Select,  SelectChangeEvent*/ } from '@mui/material';
+import {  TextField, Grid, Button, Input, InputLabel, MenuItem, Select } from '@mui/material';
 
-import { HealthCheckRating, NewEntryForm } from "../../types";
+import { HealthCheckRating, NewEntry } from "../../types";
 
 interface Props {
-  onSubmit: (values: NewEntryForm) => void; ///TESTING
+  onSubmit: (values: NewEntry, patientId: string) => void;
+  patientId: string
 }
 
-type EntryType = "HealthCheck"; //| "OccupationalHealthcare" | "Hospital";
-
-const AddEntryForm = ({ onSubmit }: Props) => {
+const AddEntryForm = ({ onSubmit, patientId }: Props) => {
   const [description, setDescription] = useState<string>('');
   const [date, setDate] = useState<string>('');
   const [specialist, setSpecialist] = useState<string>('');
   const [healthCheckRating, setHealthCheckRating] = useState(HealthCheckRating.Healthy);
   const [diagnosisCodes, setDiagnosisCodes] = useState<string[]>([]);
-  const [type, setType] = useState<EntryType>("HealthCheck");
+  const type = "HealthCheck";
+
 
   const addEvent = (event: SyntheticEvent) => {
     event.preventDefault();
@@ -27,11 +27,12 @@ const AddEntryForm = ({ onSubmit }: Props) => {
       date,
       diagnosisCodes,
       type
-    });
+    }, patientId);
   };
 
   return (
     <div>
+      <h3>New HealthCheckEntry</h3>
       <form onSubmit={addEvent}>
         <TextField
           label="Description"
@@ -39,10 +40,12 @@ const AddEntryForm = ({ onSubmit }: Props) => {
           value={description}
           onChange={({ target }) => setDescription(target.value)}
         /> 
-        <TextField
-          label="Date"
-          placeholder="YYYY-MM-DD"
-          fullWidth
+        Entry date: <Input
+          style={{
+            paddingTop: "8px",
+            paddingBottom: "8px"
+          }}
+          type="Date"
           value={date}
           onChange={({ target }) => setDate(target.value)}
         />
@@ -52,25 +55,25 @@ const AddEntryForm = ({ onSubmit }: Props) => {
           value={specialist}
           onChange={({ target }) => setSpecialist(target.value)}
         />
-        <TextField
-          label="Health check rating"
-          fullWidth
-          value={healthCheckRating}
-          onChange={() => setHealthCheckRating(HealthCheckRating.Healthy)}
-        />
+        <InputLabel id="healthcheckrating">Health Check Rating</InputLabel>
+          <Select
+            labelId="healthcheckrating"
+            id="healthcheckrating"
+            value={healthCheckRating}
+            label="Health Check"
+            onChange={(event) => setHealthCheckRating(event.target.value as HealthCheckRating)}
+          >
+          <MenuItem value={0}>Healthy</MenuItem>
+          <MenuItem value={1}>Low risk</MenuItem>
+          <MenuItem value={2}>High risk</MenuItem>
+          <MenuItem value={3}>Critical risk</MenuItem>
+          </Select>
         <TextField
           label="Diagnostic codes"
           fullWidth
           value={diagnosisCodes}
-          onChange={({ target }) => setDiagnosisCodes(target.value.split(', '))}
+          onChange={({ target }) => setDiagnosisCodes(target.value.split(','))}
         />
-        <TextField
-          label="Type"
-          fullWidth
-          value={type}
-          onChange={() => setType('HealthCheck')}
-        />
-
         <Grid>
           <Grid item>
             <Button

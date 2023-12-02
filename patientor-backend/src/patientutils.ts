@@ -5,7 +5,7 @@ const isString = (text: unknown): text is string => {
 };
 
 const parseName = (name: unknown): string => {
-  if (!isString(name)) {
+  if (!isString(name) || name.length < 5) {
     throw new Error('Incorrect or missing name:' + name);
   }
   return name;
@@ -23,7 +23,7 @@ const parseDOB = (dateOfBirth: unknown): string => {
 };
 
 const parseSSN = (ssn: unknown): string => {
-  if (!isString(ssn)) {
+  if (!isString(ssn) || ssn.length < 10) { //regex validation missing
     throw new Error('Incorrect or missing ssn: ' + ssn);
   }
   return ssn;

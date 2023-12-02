@@ -4,8 +4,11 @@ Content-Type: application/json
 {
   "date": "2319-05-01",
   "specialist": "Dr House",
-  "type": "HealthCheck",
+  "type": "Hospital",
   "description": "Digital.",
-  "diagnosisCodes": [],
-  "healthCheckRating": "k"
+  "diagnosisCodes": ["S62.5"],
+  "discharge": {
+    "date": "2020-01-01",
+    "criteria": "healed"
+  }
 }

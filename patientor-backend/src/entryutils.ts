@@ -31,21 +31,21 @@ const parseType = (type: unknown): "Hospital" | "OccupationalHealthcare" | "Heal
 };
 
 const parseDescription = (description: unknown): string => {
-  if (!isString(description)) {
+  if (!isString(description) || description.length < 5) {
     throw new Error('Incorrect or missing description: ' + description);
   }
   return description;
 };
 
 const parseSpecialist = (specialist: unknown): string => {
-  if (!isString(specialist)) {
+  if (!isString(specialist) || specialist.length < 5) {
     throw new Error('Incorrect or missing specialist: ' + specialist);
   }
   return specialist;
 };
 
 const parseDiagnosisCodes = (object: unknown): Array<Diagnosis['code']> =>  {
-  if (!object || typeof object !== 'object' || !('diagnosisCodes' in object)) {
+  if (!object || typeof object !== 'object'|| !('diagnosisCodes' in object) ) {
     // we will just trust the data to be in correct form
     return [] as Array<Diagnosis['code']>;
   }
@@ -70,7 +70,7 @@ const parseDischarge = (discharge: unknown): {date: string, criteria: string} =>
 
 //OccupationalHealthcare
 const parseEmployer = (employer: unknown): string => {
-  if (!isString(employer)) {
+  if (!isString(employer) || employer.length < 2) {
     throw new Error('Incorrect or missing employer: ' + employer);
   }
   return employer;
@@ -113,7 +113,7 @@ const toNewEntry = (object: unknown): NewEntry => {
       date: parseDate(object.date),
       specialist: parseSpecialist(object.specialist),
       type: parseType(object.type),
-      diagnosisCodes: parseDiagnosisCodes(object.diagnosisCodes)
+      diagnosisCodes: parseDiagnosisCodes(object)
     };
 
     switch (commonFields.type) {

@@ -60,9 +60,9 @@ export const OccupationalHealthcareEntry = ({ entry, diagnoses } : Props) => {
               </li>
             )}
           </ul>
-        <p>{entry.sickLeave && "Start date: " + entry.sickLeave.startDate + "\n"} 
-        {entry.sickLeave && "End date: " + entry.sickLeave.endDate + "\n"}
-        Employer: {entry.employerName}</p>
+        <p>{entry.sickLeave && "Start date: " + entry.sickLeave.startDate} <br/>
+        {entry.sickLeave && "End date: " + entry.sickLeave.endDate}</p>
+        <p>Employer: {entry.employerName}</p>
         Diagnosed by {entry.specialist}
       </div>
     );
