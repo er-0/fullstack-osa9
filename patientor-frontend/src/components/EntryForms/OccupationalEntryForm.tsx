@@ -15,10 +15,7 @@ const OccupationalEntryForm = ({ onSubmit, patientId }: Props) => {
   const [specialist, setSpecialist] = useState<string>('');
   const [employerName, setEmployer] = useState<string>('');
   const [diagnosisCodes, setDiagnosisCodes] = useState<string[]>([]);
-  const [sickLeave, setSickLeave] = useState<{ startDate: string; endDate: string | undefined }>({
-    startDate: '',
-    endDate: '',
-  });
+  const [sickLeave, setSickLeave] = useState<{ startDate: string; endDate?: string } | undefined>(undefined);
   const type = "OccupationalHealthcare";
 
   const addEvent = (event: SyntheticEvent) => {
@@ -30,7 +27,7 @@ const OccupationalEntryForm = ({ onSubmit, patientId }: Props) => {
       date,
       diagnosisCodes,
       employerName,
-      sickLeave
+      sickLeave,
     }, patientId);
   };
 
@@ -77,7 +74,7 @@ const OccupationalEntryForm = ({ onSubmit, patientId }: Props) => {
             paddingBottom: "8px"
           }}
           type="Date"
-          value={sickLeave.startDate}
+          value={sickLeave?.startDate}
           onChange={({ target }) => setSickLeave((sickLeave) => ({...sickLeave, startDate: target.value}))}
         /><br/>
         Sick leave end date: <Input
@@ -86,8 +83,8 @@ const OccupationalEntryForm = ({ onSubmit, patientId }: Props) => {
             paddingBottom: "8px"
           }}
           type="Date"
-          value={sickLeave.endDate}
-          onChange={({ target }) => setSickLeave((sickLeave) => ({...sickLeave, endDate: target.value}))}
+          value={sickLeave?.endDate}
+          onChange={({ target }) => setSickLeave((sickLeave) => ({ ...sickLeave || {startDate: ''}, endDate: target.value}))}
         />
         <Grid>
           <Grid item>

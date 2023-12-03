@@ -76,18 +76,21 @@ const parseEmployer = (employer: unknown): string => {
   return employer;
 };
 
-const parseSickLeave = (sickLeave: unknown): {startDate: string, endDate: string} => {
-  if (!sickLeave || typeof sickLeave !== 'object' || !('startDate' in sickLeave) || !('endDate' in sickLeave)) {
-    throw new Error('Incorrect or missing discharge information');
+const parseSickLeave = (sickLeave?: unknown): { startDate: string; endDate?: string } => {
+  if (!sickLeave || typeof sickLeave !== 'object' || !('startDate' in sickLeave)) {
+    throw new Error('Incorrect or missing sick leave information');
   }
-  const parsedSickLeave: {startDate: string, endDate: string} = {
+
+  const parsedSickLeave: { startDate: string; endDate?: string } = {
     startDate: parseDate(sickLeave.startDate),
-    endDate: parseDate(sickLeave.endDate),
   };
+
+  if ('endDate' in sickLeave && sickLeave.endDate !== "") {
+    parsedSickLeave.endDate = parseDate(sickLeave.endDate);
+  }
 
   return parsedSickLeave;
 };
-
 
 //HealthCheck
 const isHealthCheckRating = (param: number): param is HealthCheckRating => {
@@ -128,7 +131,12 @@ const toNewEntry = (object: unknown): NewEntry => {
             ...commonFields, 
             employerName: parseEmployer(object.employerName), 
             sickLeave: parseSickLeave(object.sickLeave) } as NewEntry;
-          } 
+          }
+        if ('employerName' in object) { //sickLeave is optional
+          return { 
+            ...commonFields, 
+            employerName: parseEmployer(object.employerName) } as NewEntry;
+          }
         break;
       case 'HealthCheck':
         if ('healthCheckRating' in object) {
