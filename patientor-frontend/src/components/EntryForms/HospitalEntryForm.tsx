@@ -1,29 +1,35 @@
 import { useState, SyntheticEvent } from "react";
 
-import {  TextField, Grid, Button, Input /*InputLabel, MenuItem, Select,  SelectChangeEvent*/ } from '@mui/material';
+import {  TextField, Grid, Button, Input } from '@mui/material';
 
-import { NewEntry } from "../../types";
+import { NewEntry, Diagnosis } from "../../types";
+import MultipleSelect from "./diagnosisSelect";
 
 interface Props {
   onSubmit: (values: NewEntry, patientId: string) => void;
-  patientId: string
+  patientId: string,
+  diagnoses: Diagnosis[]
 }
 
-const HospitalEntryForm = ({ onSubmit, patientId }: Props) => {
+const HospitalEntryForm = ({ onSubmit, patientId, diagnoses }: Props) => {
   const [description, setDescription] = useState<string>('');
   const [date, setDate] = useState<string>('');
   const [specialist, setSpecialist] = useState<string>('');
-  const [diagnosisCodes, setDiagnosisCodes] = useState<string[]>([]);
   const [discharge, setDischarge] = useState<{ date: string; criteria: string }>({
     date: '',
     criteria: '',
   });
-  const type = "Hospital";
+
+  const [diagnosisCodes, setDiagnosisCodes] = useState<string[]>([]); 
+  //from MultipleSelect
+  const handleDiagnosisCodesChange = (newDiagnosisCodes: string[]) => {
+    setDiagnosisCodes(newDiagnosisCodes);
+  };
 
   const addEvent = (event: SyntheticEvent) => {
     event.preventDefault();
     onSubmit({
-      type,
+      type: "Hospital",
       description,
       specialist,
       date,
@@ -57,12 +63,7 @@ const HospitalEntryForm = ({ onSubmit, patientId }: Props) => {
           value={specialist}
           onChange={({ target }) => setSpecialist(target.value)}
         />
-        <TextField
-          label="Diagnostic codes"
-          fullWidth
-          value={diagnosisCodes}
-          onChange={({ target }) => setDiagnosisCodes(target.value.split(','))}
-        />
+        <MultipleSelect diagnoses={diagnoses} onChange={handleDiagnosisCodesChange}/>
         Discharge date: <Input
           style={{
             paddingTop: "8px",

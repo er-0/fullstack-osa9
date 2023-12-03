@@ -106,11 +106,11 @@ export const PatientPage = ({ patients, diagnoses } : Props) => {
             Close form </Button>}
 
         {selectedForm === 'healthCheck' && (
-          <HealthCheckEntryForm onSubmit={submitNewEntry} patientId={patient.id}/>)}
+          <HealthCheckEntryForm onSubmit={submitNewEntry} patientId={patient.id} diagnoses={diagnoses}/>)}
         {selectedForm === 'occupational' && (
-          <OccupationalEntryForm onSubmit={submitNewEntry} patientId={patient.id}/>)}
+          <OccupationalEntryForm onSubmit={submitNewEntry} patientId={patient.id} diagnoses={diagnoses}/>)}
         {selectedForm === 'hospital' && (
-          <HospitalEntryForm onSubmit={submitNewEntry} patientId={patient.id}/>)}
+          <HospitalEntryForm onSubmit={submitNewEntry} patientId={patient.id} diagnoses={diagnoses}/>)}
 
         <h3>entries</h3>
         {entries?.map((entry) => 

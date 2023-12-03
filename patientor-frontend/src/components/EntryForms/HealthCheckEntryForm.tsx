@@ -2,21 +2,26 @@ import { useState, SyntheticEvent } from "react";
 
 import {  TextField, Grid, Button, Input, InputLabel, MenuItem, Select } from '@mui/material';
 
-import { HealthCheckRating, NewEntry } from "../../types";
+import { HealthCheckRating, NewEntry, Diagnosis } from "../../types";
+import MultipleSelect from "./diagnosisSelect";
 
 interface Props {
   onSubmit: (values: NewEntry, patientId: string) => void;
-  patientId: string
+  patientId: string,
+  diagnoses: Diagnosis[]
 }
 
-const AddEntryForm = ({ onSubmit, patientId }: Props) => {
+const HealthCheckEntryForm = ({ onSubmit, patientId, diagnoses }: Props) => {
   const [description, setDescription] = useState<string>('');
   const [date, setDate] = useState<string>('');
   const [specialist, setSpecialist] = useState<string>('');
   const [healthCheckRating, setHealthCheckRating] = useState(HealthCheckRating.Healthy);
-  const [diagnosisCodes, setDiagnosisCodes] = useState<string[]>([]);
-  const type = "HealthCheck";
 
+  const [diagnosisCodes, setDiagnosisCodes] = useState<string[]>([]); 
+  //from MultipleSelect
+  const handleDiagnosisCodesChange = (newDiagnosisCodes: string[]) => {
+    setDiagnosisCodes(newDiagnosisCodes);
+  };
 
   const addEvent = (event: SyntheticEvent) => {
     event.preventDefault();
@@ -26,7 +31,7 @@ const AddEntryForm = ({ onSubmit, patientId }: Props) => {
       healthCheckRating,
       date,
       diagnosisCodes,
-      type
+      type: "HealthCheck"
     }, patientId);
   };
 
@@ -68,12 +73,7 @@ const AddEntryForm = ({ onSubmit, patientId }: Props) => {
           <MenuItem value={2}>High risk</MenuItem>
           <MenuItem value={3}>Critical risk</MenuItem>
           </Select>
-        <TextField
-          label="Diagnostic codes"
-          fullWidth
-          value={diagnosisCodes}
-          onChange={({ target }) => setDiagnosisCodes(target.value.split(','))}
-        />
+        <MultipleSelect diagnoses={diagnoses} onChange={handleDiagnosisCodesChange}/>
         <Grid>
           <Grid item>
             <Button
@@ -92,4 +92,4 @@ const AddEntryForm = ({ onSubmit, patientId }: Props) => {
   );
 };
 
-export default AddEntryForm;
+export default HealthCheckEntryForm;

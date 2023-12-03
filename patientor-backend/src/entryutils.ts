@@ -55,13 +55,20 @@ const parseDiagnosisCodes = (object: unknown): Array<Diagnosis['code']> =>  {
 
 
 //HospitalEntry
+const parseCriteria = (criteria: unknown): string => {
+  if (!isString(criteria) || criteria.length < 5) {
+    throw new Error('Incorrect or missing criteria: ' + criteria);
+  }
+  return criteria;
+};
+
 const parseDischarge = (discharge: unknown): {date: string, criteria: string} => {
   if (!discharge || typeof discharge !== 'object' || !('date' in discharge) || !('criteria' in discharge)) {
     throw new Error('Incorrect or missing discharge information');
   }
   const parsedDischarge: {date: string, criteria: string} = {
     date: parseDate(discharge.date),
-    criteria: parseDescription(discharge.criteria),
+    criteria: parseCriteria(discharge.criteria),
   };
 
   return parsedDischarge;
@@ -152,15 +159,3 @@ const toNewEntry = (object: unknown): NewEntry => {
 };
 
 export default toNewEntry;
-
-
-
-/*const parseHealthCheck = (healthCheckRating: unknown): "Healthy" | "LowRisk" | "HighRisk" | "CriticalRisk" => {
-  if ((healthCheckRating !== "Healthy") && 
-    (healthCheckRating !== "LowRisk") && 
-    (healthCheckRating !== "HighRisk") &&
-    (healthCheckRating !== "CriticalRisk")) {
-    throw new Error('Incorrect or missing type: ' + healthCheckRating); 
-  }
-  return healthCheckRating;
-};*/
